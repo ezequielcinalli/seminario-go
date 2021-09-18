@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	estructura, err := parser.GetEstructura("TXFFABCD")
+	estructura, err := parser.GetEstructura("TX04ABCD")
 
 	if err != nil {
 		fmt.Println(err)
