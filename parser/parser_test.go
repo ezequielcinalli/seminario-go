@@ -14,10 +14,14 @@ func TestGetEstructura(t *testing.T) {
 		Value   string // the input value
 		Length  int    // value length
 	}{
-		{"TX02AB", true, "TX", "AB", 2},
-		{"NN100987654321", true, "NN", "0987654321", 10},
 		{"TXJ6ABCDE", false, "", "", 0},
 		{"NNF", false, "", "", 0},
+		{"TX02AB", true, "TX", "AB", 2},
+		{"NN100987654321", true, "NN", "0987654321", 10},
+		{"TX06ABCDE", false, "", "", 0},
+		{"NN04000A", false, "", "", 0},
+		{"ZZ04000A", false, "", "", 0},
+		{"TX04ABC5", false, "", "", 0},
 	}
 
 	for _, testData := range cases {

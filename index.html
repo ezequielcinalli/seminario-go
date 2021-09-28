@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>result: Go Coverage Report</title>
+		<title>parser: Go Coverage Report</title>
 		<style>
 			body {
 				background: black;
@@ -55,7 +55,7 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">tpe/result/result.go (100.0%)</option>
+				<option value="file0">tpe/parser/parser.go (100.0%)</option>
 				
 				</select>
 			</div>
@@ -69,7 +69,7 @@
 		</div>
 		<div id="content">
 		
-		<pre class="file" id="file0" style="display: none">package result
+		<pre class="file" id="file0" style="display: none">package parser
 
 import (
         "errors"
@@ -90,6 +90,33 @@ func GetEstructura(s string) (*Result, error) <span class="cov8" title="1">{
         if err != nil </span><span class="cov8" title="1">{
                 return nil, errors.New("Se espera que el valor de length sea numerico!")
         }</span>
+
+        // comprueba si el largo de la cadena es igual a los 4 primeros caracteres + el largo indicado por length
+        <span class="cov8" title="1">if len(s) != intLength+4 </span><span class="cov8" title="1">{
+                return nil, errors.New("El valor length indicado no coincide con el largo del value")
+        }</span>
+
+        <span class="cov8" title="1">switch s[0:2] </span>{
+        case "TX":<span class="cov8" title="1">
+                //si se especifica tipo TX y dentro del value se encuentra un numero se retorna un error
+                // el cero equivale al ascii 48 y el nueve al ascii 57
+                for _, c := range s[4:] </span><span class="cov8" title="1">{
+                        if c &gt;= 48 &amp;&amp; c &lt;= 57 </span><span class="cov8" title="1">{
+                                return nil, errors.New("Se especifico tipo TX pero el value es numerico")
+                        }</span>
+                }
+
+        case "NN":<span class="cov8" title="1">
+                //si se especifica tipo NN y dentro del value se encuentra un caracter diferente a un numero se retorna un error
+                // el cero equivale al ascii 48 y el nueve al ascii 57
+                for _, c := range s[4:] </span><span class="cov8" title="1">{
+                        if c &lt; 48 || c &gt; 57 </span><span class="cov8" title="1">{
+                                return nil, errors.New("Se especifico tipo NN pero el value no es numerico")
+                        }</span>
+                }
+        default:<span class="cov8" title="1">
+                return nil, errors.New("El tipo debe ser TX o NN")</span>
+        }
 
         <span class="cov8" title="1">resultado := &amp;Result{s[0:2], s[4:], intLength}
         return resultado, nil</span>
